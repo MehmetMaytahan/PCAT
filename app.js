@@ -1,18 +1,12 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const port = 3000;
 
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
-
-  const photo = {
-    id: 1,
-    name: "My first photo",
-    description: "This is my first photo"
-  };
-
-
-  res.send(photo);
-
+  res.sendFile(path.resolve(__dirname, "temp/index.html"));
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

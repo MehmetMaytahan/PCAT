@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const ejs = require("ejs");
 
 const app = express();
 const path = require("path");
@@ -19,20 +18,25 @@ app.use(express.json());
 // ROUTES
 app.get("/", async (req, res) => {
   const Photos = await Photo.find({});
-  res.render("index", { Photos });
+  res.render("index", { Photos, page_name: "index" });
 });
 
 app.get("/about", (req, res) => {
-  res.render("about");
+  res.render("about", { page_name: "about" });
 });
 
 app.get("/add", (req, res) => {
-  res.render("add");
+  res.render("add", { page_name: "add" });
 });
 
 app.post("/photos", async (req, res) => {
   await Photo.create(req.body);
   res.redirect("/");
+});
+
+app.get("/photos/:id", async (req, res) => {
+  const photo = await Photo.findById(req.params.id);
+  res.render("photo-detail", { photo, page_name: "photo_detail" });
 });
 
 mongoose.set("strictQuery", false);

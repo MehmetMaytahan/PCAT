@@ -20,14 +20,17 @@
                         </button>
                         <div class="collapse navbar-collapse tm-nav" id="navbar-nav">
                             <ul class="navbar-nav text-uppercase">
-                                <li class="nav-item active">
+                                <li class="nav-item <%= page_name == 'index' && 'active' %>">
                                     <a class="nav-link tm-nav-link" href="/">Photos <span
                                             class="sr-only">(current)</span></a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item <%= page_name == 'about' && 'active' %>">
                                     <a class="nav-link tm-nav-link" href="/about">About</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item <%= page_name != 'photo_detail' ? 'd-none' : 'd-visiable active' %>">
+                                    <a class="nav-link tm-nav-link">Photo Detail</a>
+                                </li>
+                                <li class="nav-item <%= page_name == 'add' && 'active' %>">
                                     <a class="nav-link tm-nav-link" href="/add">Add Photo</a>
                                 </li>
                             </ul>

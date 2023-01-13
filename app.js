@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
+const methodOverride = require("method-override");
 
 const app = express();
 const path = require("path");
@@ -8,7 +9,6 @@ const fs = require("fs");
 const port = 3000;
 
 const Photo = require("./models/Photo");
-const { fstat } = require("fs");
 
 // TEMPLATE ENGINE
 app.set("view engine", "ejs");
@@ -18,6 +18,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(fileUpload());
+app.use(methodOverride("_method"));
 
 // ROUTES
 app.get("/", async (req, res) => {
@@ -33,13 +34,13 @@ app.get("/add", (req, res) => {
   res.render("add", { page_name: "add" });
 });
 
+// add new photo
 app.post("/photos", async (req, res) => {
   const uploadDir = "public/uploads";
 
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
   }
-
   let uploadeImage = req.files.image;
   let uploadPath = path.join(__dirname, "public/uploads", uploadeImage.name);
 
@@ -50,13 +51,37 @@ app.post("/photos", async (req, res) => {
     });
     res.redirect("/");
   });
-
-  // await Photo.create(req.body);
 });
 
 app.get("/photos/:id", async (req, res) => {
   const photo = await Photo.findById(req.params.id);
   res.render("photo-detail", { photo, page_name: "photo_detail" });
+});
+
+app.get("/photos/edit/:id", async (req, res) => {
+  const photo = await Photo.findOne({ _id: req.params.id });
+  res.render("edit", { photo, page_name: "edit" });
+});
+
+app.put("/photos/:id", async (req, res) => {
+  let uploadeImage = req.files.image; // you can use req.files.file.mv() to save file
+  let uploadPath = path.join(__dirname, "public/uploads", uploadeImage.name);
+
+  // update photo
+  const photo = await Photo.findOne({ _id: req.params.id });
+
+  uploadeImage.mv(uploadPath, async () => {
+    photo.title = req.body.title;
+    photo.description = req.body.description;
+    photo.image = `/uploads/${uploadeImage.name}`;
+    await photo.save();
+  });
+
+  fs.unlinkSync("public" + photo.image, err => {
+    if (err) throw err;
+    console.log("file deleted");
+  });
+  res.redirect(`/photos/${photo._id}`);
 });
 
 mongoose.set("strictQuery", false);

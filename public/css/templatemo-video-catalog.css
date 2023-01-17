@@ -288,7 +288,7 @@ p {
 }
 
 .tm-thumbnail-container:hover img {
-    transform: scale(1.2) rotate(5deg);
+    transform: scale(1.2) rotate(10deg);
 }
 
 .tm-img-overlay {

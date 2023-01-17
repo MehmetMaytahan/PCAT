@@ -45,7 +45,7 @@ app.get("/photos/edit/:id", getEditPage); // route to edit photo
 
 mongoose.set("strictQuery", false);
 mongoose.connect(
-  "mongodb://127.0.0.1/pcat-test-db",
+  "mongodb+srv://pcat-app:123456789123456@cluster0.nnkd0dq.mongodb.net/?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -53,8 +53,6 @@ mongoose.connect(
   err => {
     if (err) throw err;
     console.log("Connected to DB");
-    app.listen(port, () =>
-      console.log(`Example app listening on port ${port}!`)
-    );
   }
 );
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));

@@ -1,6 +1,6 @@
 const Photo = require("../models/Photo");
-
 const fs = require("fs");
+const path = require("path");
 
 exports.getAllPhotos = async (req, res) => {
   const page = req.query.page || 1;
@@ -42,11 +42,7 @@ exports.createPhoto = async (req, res) => {
     });
     res.redirect("/");
   } else {
-    let uploadPath = path.join(
-      __dirname,
-      "public/uploads",
-      uploadImage.image.name
-    );
+    let uploadPath = path.join("public/uploads", uploadImage.image.name);
 
     uploadImage.image.mv(uploadPath, async () => {
       await Photo.create({
@@ -69,11 +65,7 @@ exports.updatePhoto = async (req, res) => {
     await photo.save();
     res.redirect(`/photos/${photo._id}`);
   } else {
-    let uploadPath = path.join(
-      __dirname,
-      "public/uploads",
-      uploadedImage.image.name
-    );
+    let uploadPath = path.join("public/uploads", uploadedImage.image.name);
 
     uploadedImage.image.mv(uploadPath, async () => {
       photo.title = req.body.title;

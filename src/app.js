@@ -8,19 +8,19 @@ const path = require("path");
 const fs = require("fs");
 const port = 3000;
 
-const Photo = require("./models/Photo");
+const Photo = require("../models/Photo");
 const {
   getAllPhotos,
   getPhoto,
   createPhoto,
   updatePhoto,
   deletePhoto
-} = require("./controllers/photoControllers");
+} = require("../controllers/photoControllers");
 const {
   getAboutPage,
   getAddPage,
   getEditPage
-} = require("./controllers/pageContollers");
+} = require("../controllers/pageContollers");
 
 // TEMPLATE ENGINE
 app.set("view engine", "ejs");

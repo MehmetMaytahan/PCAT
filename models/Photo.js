@@ -13,7 +13,7 @@ const PhotoSchema = Schema({
 
 PhotoSchema.pre("save",function(next){
   const photo = this;
-  if(!photo.isModified("image")) return next();
+  if(!photo.isModified("_id")) return next();
 })
 
 const Photo = mongoose.model("Photo", PhotoSchema);
